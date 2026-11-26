@@ -1,0 +1,17 @@
+# Render blueprint — deploys Zyad Chat App as a free web service.
+# Push this repo to GitHub, then in Render: New > Blueprint > pick the repo.
+# Create a free Neon Postgres database first and paste its URL as DATABASE_URL.
+services:
+  - type: web
+    name: zyad-chat-app
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true

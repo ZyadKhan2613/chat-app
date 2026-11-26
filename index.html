@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Zyad Chat</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ AUTH ============ -->
+<div id="auth-view">
+  <div class="auth-card">
+    <h1>💬 Zyad Chat</h1>
+    <p class="sub">Your own WhatsApp-style chat app</p>
+    <div class="auth-tabs">
+      <button id="tab-login" class="active" onclick="showTab('login')">Log in</button>
+      <button id="tab-register" onclick="showTab('register')">Sign up</button>
+    </div>
+    <div id="login-form">
+      <label>Username</label>
+      <input id="login-username" type="text" placeholder="username" autocomplete="username">
+      <label>Password</label>
+      <input id="login-password" type="password" placeholder="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="primary" onclick="doLogin()">Log in</button>
+    </div>
+    <div id="register-form" class="hidden">
+      <label>Display name</label>
+      <input id="reg-display" type="text" placeholder="e.g. Zyad Khan" maxlength="40">
+      <label>Username</label>
+      <input id="reg-username" type="text" placeholder="lowercase letters, numbers, _" autocomplete="username">
+      <label>Password</label>
+      <input id="reg-password" type="password" placeholder="at least 4 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+      <button class="primary" onclick="doRegister()">Create account</button>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <p class="sub" style="margin-top:10px">No phone number or SMS needed — just a username and password.</p>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app-view" class="hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="me" onclick="openProfile()">
+        <span class="avatar" id="me-avatar">?</span>
+        <span class="name" id="me-name">…</span>
+      </div>
+      <button class="icon-btn" title="New chat" onclick="openNewChat()">💬</button>
+      <button class="icon-btn" title="New group" onclick="openNewGroup()">👥</button>
+      <button class="icon-btn" title="Log out" onclick="doLogout()">🚪</button>
+    </div>
+    <div class="search-box">
+      <input id="chat-search" type="text" placeholder="Search chats" oninput="renderChatList()">
+    </div>
+    <div id="chat-list"></div>
+  </aside>
+
+  <main class="chat-pane" id="chat-pane">
+    <div class="chat-empty" id="chat-empty">
+      <div class="big">💬</div>
+      <h2>Zyad Chat</h2>
+      <p style="margin-top:8px;max-width:340px">Pick a chat on the left, or start a new one.<br>Messages, photos and voice notes live on the server — open from any device after logging in.</p>
+    </div>
+
+    <div id="chat-active" class="hidden" style="display:flex;flex-direction:column;flex:1;min-height:0">
+      <div class="chat-header">
+        <button class="icon-btn" id="back-btn" onclick="closeChat()">←</button>
+        <span class="avatar" id="chat-avatar">?</span>
+        <div class="who" onclick="openChatInfo()">
+          <div class="name" id="chat-title">…</div>
+          <div class="status" id="chat-status"></div>
+        </div>
+        <button class="icon-btn" title="Search in chat" onclick="toggleChatSearch()">🔍</button>
+        <button class="icon-btn" title="Add members" id="add-member-btn" onclick="openAddMember()">➕</button>
+      </div>
+      <div class="search-box hidden" id="chat-search-box">
+        <input id="chat-search-input" type="text" placeholder="Search messages in this chat" oninput="loadMessages(true)">
+      </div>
+      <div id="messages"></div>
+      <div class="typing-indicator hidden" id="typing-indicator"></div>
+      <div class="reply-preview hidden" id="reply-preview">
+        <div class="bar"></div>
+        <div class="txt"><div class="r-name" id="reply-name"></div><div id="reply-text"></div></div>
+        <button onclick="cancelReply()">✕</button>
+      </div>
+      <div class="composer">
+        <button class="attach" title="Send photo or video" onclick="document.getElementById('file-input').click()">📎</button>
+        <input type="file" id="file-input" accept="image/*,video/*" class="hidden" onchange="sendMediaFile(this)">
+        <button class="attach" title="Emoji" onclick="toggleEmojiPicker(event)">😊</button>
+        <textarea id="msg-input" rows="1" placeholder="Type a message" onkeydown="composerKey(event)" oninput="onTyping()"></textarea>
+        <button class="mic-btn" id="mic-btn" title="Voice note" onclick="toggleRecording()">🎤</button>
+        <button id="send-btn" title="Send" onclick="sendText()">➤</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div id="modal-root"></div>
+<div id="emoji-pop-root"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

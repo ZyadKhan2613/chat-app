@@ -1,0 +1,1 @@
+{"dependencies":{"bcryptjs":"^2.4.3","express":"^4.21.2","pg":"^8.13.1"},"description":"WhatsApp-style chat app — standalone deployable (Node.js + Express + PostgreSQL)","engines":{"node":">=18"},"main":"server.js","name":"zyad-chat-app","scripts":{"start":"node server.js"},"version":"1.0.0"}
